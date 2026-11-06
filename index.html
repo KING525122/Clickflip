@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClickFlip</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #101116;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 6%;
+  background: #18191f;
+  border-bottom: 1px solid #30313a;
+}
+
+.logo {
+  color: #ff922e;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+button {
+  background: #ff922e;
+  color: #151515;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.container {
+  max-width: 950px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 36px;
+}
+
+.subtitle {
+  color: #999;
+}
+
+.balance {
+  background: linear-gradient(120deg,#29202a,#20232c);
+  border: 1px solid #49404b;
+  border-radius: 15px;
+  padding: 25px;
+  margin: 30px 0;
+}
+
+.balance h2 {
+  color: #ff922e;
+  font-size: 38px;
+  margin: 10px 0;
+}
+
+.section-title {
+  margin-top: 40px;
+}
+
+.games {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 18px;
+}
+
+.card {
+  background: #1d1e25;
+  border: 1px solid #34343d;
+  padding: 25px;
+  border-radius: 14px;
+}
+
+.card h3 {
+  font-size: 22px;
+}
+
+.card p {
+  color: #aaa;
+}
+
+.result {
+  background: #22232b;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 20px;
+  color: #ff922e;
+  font-size: 20px;
+}
+
+footer {
+  text-align: center;
+  color: #777;
+  padding: 35px;
+}
+
+@media(max-width:600px) {
+  .games {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🪙 CLICKFLIP</div>
+  <button onclick="alert('Profile coming soon!')">
+    Profile
+  </button>
+</header>
+
+<div class="container">
+
+  <h1>Welcome to ClickFlip</h1>
+  <p class="subtitle">
+    Your Clicker Simulator Reborn community.
+  </p>
+
+  <div class="balance">
+    <p>YOUR DEMO CREDITS</p>
+    <h2>10,000</h2>
+    <p>Free practice points · No cash value</p>
+  </div>
+
+  <h2 class="section-title">Explore Games</h2>
+
+  <div class="games">
+
+    <div class="card">
+      <h3>🪙 Coinflip</h3>
+      <p>Try a free coin toss.</p>
+      <button onclick="flipCoin()">
+        Flip Coin
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>👥 Community</h3>
+      <p>Explore the player community.</p>
+      <button onclick="showCommunity()">
+        Explore
+      </button>
+    </div>
+
+  </div>
+
+  <div class="result" id="result">
+    Welcome to ClickFlip!
+  </div>
+
+</div>
+
+<footer>
+  ClickFlip © 2026 · Community Demo
+</footer>
+
+<script>
+function flipCoin() {
+  const result = Math.random() < 0.5
+    ? "HEADS 🪙"
+    : "TAILS 🪙";
+
+  document.getElementById("result").innerText =
+    "You got " + result;
+}
+
+function showCommunity() {
+  document.getElementById("result").innerText =
+    "Welcome to the ClickFlip community!";
+}
+</script>
+
+</body>
+</html>
