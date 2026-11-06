@@ -1,192 +1,776 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClickFlip</title>
+<title>Clickflip | Tap Simulator Reborn</title>
 
 <style>
-* {
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg:#080d18;
+  --panel:#101a2c;
+  --panel2:#14213a;
+  --blue:#3288ff;
+  --cyan:#38d9ff;
+  --text:#f4f7ff;
+  --muted:#8494ad;
+  --border:rgba(125,165,220,.13);
 }
+
+*{box-sizing:border-box;margin:0;padding:0}
 
 body {
-  margin: 0;
-  background: #101116;
-  color: white;
-  font-family: Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  min-height:100vh;
+  background-image:
+    radial-gradient(ellipse at 70% 0%,rgba(31,111,220,.17),transparent 40%),
+    radial-gradient(ellipse at 0% 70%,rgba(20,70,150,.10),transparent 40%);
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 6%;
-  background: #18191f;
-  border-bottom: 1px solid #30313a;
+button{font-family:inherit;cursor:pointer}
+
+.layout{display:flex;min-height:100vh}
+
+.sidebar {
+  width:245px;
+  background:rgba(10,17,30,.96);
+  border-right:1px solid var(--border);
+  padding:27px 17px;
+  position:fixed;
+  inset:0 auto 0 0;
+  z-index:5;
 }
 
 .logo {
-  color: #ff922e;
-  font-size: 25px;
-  font-weight: bold;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:5px 10px 35px;
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:-1px;
 }
 
-button {
-  background: #ff922e;
-  color: #151515;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 20px;
-  font-weight: bold;
-  cursor: pointer;
+.logo-icon {
+  width:39px;height:39px;
+  display:grid;place-items:center;
+  border-radius:12px;
+  background:linear-gradient(135deg,#287bff,#39dfff);
+  box-shadow:0 0 25px #278aff55;
+  font-size:21px;
 }
 
-.container {
-  max-width: 950px;
-  margin: 40px auto;
-  padding: 20px;
+.logo span{color:var(--cyan)}
+
+.nav-label {
+  color:#64758f;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.7px;
+  padding:12px 12px;
 }
 
-h1 {
-  font-size: 36px;
+.nav {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  width:100%;
+  padding:14px;
+  margin:4px 0;
+  border:1px solid transparent;
+  border-radius:12px;
+  color:#91a2bd;
+  background:transparent;
+  text-align:left;
+  font-size:13px;
+  font-weight:700;
+  transition:.2s;
 }
 
-.subtitle {
-  color: #999;
+.nav:hover,.nav.active {
+  background:linear-gradient(100deg,#1b4b8c55,#172c4b55);
+  color:white;
+  border-color:#348cff35;
 }
 
-.balance {
-  background: linear-gradient(120deg,#29202a,#20232c);
-  border: 1px solid #49404b;
-  border-radius: 15px;
-  padding: 25px;
-  margin: 30px 0;
+.nav.active{box-shadow:inset 3px 0 var(--blue)}
+
+.nav-icon{font-size:18px;width:22px;text-align:center}
+
+.sidebar-bottom {
+  position:absolute;
+  bottom:22px;
+  left:17px;right:17px;
 }
 
-.balance h2 {
-  color: #ff922e;
-  font-size: 38px;
-  margin: 10px 0;
+.game-card {
+  padding:15px;
+  border-radius:14px;
+  background:linear-gradient(140deg,#163c70,#101c31);
+  border:1px solid #3a83d733;
 }
+
+.game-card small{color:#9ab9df;font-size:10px}
+.game-card h3{font-size:13px;margin:7px 0}
+.game-card p{font-size:10px;color:#9aabc4;line-height:1.6}
+
+.main {
+  margin-left:245px;
+  width:calc(100% - 245px);
+  padding:27px 34px 50px;
+  max-width:1600px;
+}
+
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:32px;
+  gap:15px;
+}
+
+.breadcrumb{font-size:12px;color:var(--muted)}
+.breadcrumb strong{color:white}
+
+.top-right{display:flex;align-items:center;gap:12px}
+
+.online {
+  border:1px solid var(--border);
+  border-radius:30px;
+  padding:10px 14px;
+  color:#9eb0ca;
+  font-size:11px;
+}
+
+.dot {
+  display:inline-block;
+  height:7px;width:7px;
+  border-radius:50%;
+  background:#31d99a;
+  margin-right:7px;
+  box-shadow:0 0 10px #31d99a;
+}
+
+.profile {
+  display:flex;align-items:center;gap:10px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:7px 12px 7px 7px;
+  border-radius:30px;
+}
+
+.avatar {
+  width:31px;height:31px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:linear-gradient(135deg,#287cff,#37d9ff);
+  font-weight:900;
+}
+
+.profile b{font-size:11px}
+.profile small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+
+.page{display:none}
+.page.active{display:block;animation:appear .3s ease}
+
+@keyframes appear{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:23px;
+  gap:15px;
+}
+
+.heading h1{font-size:29px;font-weight:900;letter-spacing:-1px}
+.heading p{font-size:12px;color:var(--muted);margin-top:8px}
+
+.tag {
+  font-size:10px;
+  padding:8px 12px;
+  border-radius:20px;
+  background:#173c6855;
+  border:1px solid #3288ff40;
+  color:#79b7ff;
+}
+
+.hero {
+  min-height:225px;
+  border-radius:19px;
+  padding:31px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid #3c8fff35;
+  background:
+    radial-gradient(circle at 80% 40%,#318dff35,transparent 30%),
+    linear-gradient(110deg,#12294a,#101b30 70%);
+}
+
+.hero:after {
+  content:"";
+  position:absolute;
+  width:250px;height:250px;
+  right:8%;top:-90px;
+  border:1px solid #64baff18;
+  border-radius:50%;
+  box-shadow:0 0 0 25px #64baff08,0 0 0 55px #64baff06;
+}
+
+.hero-content{position:relative;z-index:1;max-width:520px}
+.hero-label{color:#69b9ff;font-size:10px;font-weight:800;letter-spacing:2px}
+.hero h2{font-size:32px;line-height:1.2;margin:13px 0}
+.hero p{font-size:12px;color:#a5b8d3;line-height:1.8;max-width:420px}
+
+.primary {
+  border:0;
+  color:white;
+  font-size:12px;
+  font-weight:800;
+  padding:13px 19px;
+  border-radius:10px;
+  background:linear-gradient(100deg,#2676ef,#26b9ed);
+  box-shadow:0 7px 24px #268cff35;
+  margin-top:20px;
+  transition:.2s;
+}
+
+.primary:hover{transform:translateY(-2px);filter:brightness(1.15)}
+
+.hero-coin {
+  position:relative;z-index:1;
+  width:115px;height:115px;
+  border-radius:50%;
+  display:grid;place-items:center;
+  font-size:49px;
+  background:radial-gradient(circle at 35% 30%,#d4f6ff,#3195ff 55%,#1453a3);
+  border:5px solid #9ddcff;
+  box-shadow:0 0 40px #278fff66,inset 0 0 15px #fff8;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin:20px 0;
+}
+
+.stat {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:19px;
+}
+
+.stat-top{display:flex;justify-content:space-between;align-items:center}
+.stat-icon{font-size:20px}
+.stat small{color:var(--muted);font-size:10px}
+.stat h2{font-size:23px;margin-top:13px}
+.stat p{color:#36d6a0;font-size:10px;margin-top:6px}
 
 .section-title {
-  margin-top: 40px;
+  display:flex;justify-content:space-between;
+  align-items:center;margin:28px 0 14px;
 }
 
-.games {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 18px;
+.section-title h3{font-size:15px}
+.section-title span{font-size:10px;color:var(--muted)}
+
+.grid2 {
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:15px;
 }
 
-.card {
-  background: #1d1e25;
-  border: 1px solid #34343d;
-  padding: 25px;
-  border-radius: 14px;
+.panel {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:20px;
 }
 
-.card h3 {
-  font-size: 22px;
+.panel h3{font-size:14px;margin-bottom:7px}
+.panel-sub{font-size:10px;color:var(--muted);margin-bottom:17px}
+
+.mode {
+  display:flex;align-items:center;gap:14px;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:15px;margin-top:10px;
 }
 
-.card p {
-  color: #aaa;
+.mode-icon {
+  width:42px;height:42px;
+  border-radius:11px;
+  display:grid;place-items:center;
+  background:#2678db30;font-size:21px;
 }
 
-.result {
-  background: #22232b;
-  padding: 25px;
-  border-radius: 12px;
-  text-align: center;
-  margin-top: 20px;
-  color: #ff922e;
-  font-size: 20px;
+.mode-info{flex:1}
+.mode-info b{font-size:12px}
+.mode-info small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+
+.arrow{color:#6baaff;font-size:18px}
+
+.activity-row {
+  display:flex;justify-content:space-between;
+  align-items:center;padding:13px 0;
+  border-bottom:1px solid var(--border);
+  font-size:11px;
 }
 
-footer {
-  text-align: center;
-  color: #777;
-  padding: 35px;
+.activity-row:last-child{border:0}
+.activity-row small{color:var(--muted);display:block;margin-top:4px}
+.result{color:#42d9a3;font-weight:800}
+
+.flip-area {
+  max-width:650px;
+  margin:0 auto;
+  text-align:center;
+  padding:28px 20px;
+  background:linear-gradient(150deg,#142744,#0e1728);
+  border:1px solid var(--border);
+  border-radius:20px;
 }
 
-@media(max-width:600px) {
-  .games {
-    grid-template-columns: 1fr;
+.coin {
+  width:150px;height:150px;
+  border-radius:50%;
+  margin:28px auto;
+  display:grid;place-items:center;
+  font-size:55px;
+  font-weight:900;
+  color:#fff;
+  border:6px solid #a5e5ff;
+  background:radial-gradient(circle at 35% 30%,#83d9ff,#2474db 65%,#12418c);
+  box-shadow:0 0 45px #278cff55,inset 0 0 15px #ffffff44;
+}
+
+.coin.flipping{animation:flip .65s ease-in-out}
+
+@keyframes flip{
+  0%{transform:rotateY(0) scale(1)}
+  50%{transform:rotateY(900deg) scale(.8)}
+  100%{transform:rotateY(1800deg) scale(1)}
+}
+
+.flip-result{font-size:19px;font-weight:900;margin:13px 0}
+.flip-note{color:var(--muted);font-size:11px;line-height:1.8}
+
+.flip-button{margin-top:20px;min-width:190px}
+
+.history-list{margin-top:20px;text-align:left}
+
+.table {
+  width:100%;border-collapse:collapse;
+  text-align:left;font-size:11px;
+}
+
+.table th {
+  color:#71839f;font-size:10px;
+  padding:14px 10px;
+  border-bottom:1px solid var(--border);
+}
+
+.table td {
+  padding:15px 10px;
+  border-bottom:1px solid var(--border);
+}
+
+.table tr:last-child td{border:0}
+
+.player {
+  display:flex;align-items:center;gap:10px;font-weight:700;
+}
+
+.player-icon {
+  width:30px;height:30px;border-radius:9px;
+  display:grid;place-items:center;
+  background:#254a7a;font-size:14px;
+}
+
+.rank{color:#7cbaff;font-weight:900}
+
+.empty {
+  color:var(--muted);font-size:12px;
+  text-align:center;padding:25px;
+}
+
+.notice {
+  border:1px solid #3288ff30;
+  background:#17365b55;
+  color:#a9c7e9;
+  padding:13px 15px;
+  border-radius:11px;
+  font-size:10px;
+  line-height:1.7;
+  margin-top:18px;
+}
+
+.footer {
+  color:#52647e;
+  text-align:center;
+  font-size:10px;
+  margin-top:40px;
+}
+
+@media(max-width:900px){
+  .sidebar{width:190px}
+  .main{margin-left:190px;width:calc(100% - 190px);padding:22px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:650px){
+  .sidebar{
+    width:100%;height:66px;top:auto;bottom:0;
+    padding:6px 8px;
+    border-right:0;border-top:1px solid var(--border);
+    display:flex;justify-content:space-around;
+    background:#0b1424;
   }
+  .logo,.nav-label,.sidebar-bottom{display:none}
+  .nav{
+    width:auto;flex:1;
+    margin:0;padding:8px 2px;
+    display:flex;flex-direction:column;
+    justify-content:center;gap:4px;
+    font-size:9px;text-align:center;
+  }
+  .nav-icon{font-size:18px}
+  .nav.active{box-shadow:inset 0 2px var(--blue)}
+  .main{margin:0;width:100%;padding:19px 14px 90px}
+  .topbar{margin-bottom:23px}
+  .online{display:none}
+  .heading h1{font-size:24px}
+  .hero{padding:22px;min-height:210px}
+  .hero h2{font-size:25px}
+  .hero-coin{width:75px;height:75px;font-size:32px}
+  .stats{gap:9px}
+  .stat{padding:14px}
+  .stat h2{font-size:20px}
+  .grid2{grid-template-columns:1fr}
+  .panel{padding:16px}
+  .table{font-size:10px}
+  .table th,.table td{padding:12px 6px}
 }
+
 </style>
 </head>
 
 <body>
+<div class="layout">
 
-<header>
-  <div class="logo">🪙 CLICKFLIP</div>
-  <button onclick="alert('Profile coming soon!')">
-    Profile
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">C</div>
+    CLICK<span>FLIP</span>
+  </div>
+
+  <div class="nav-label">MAIN MENU</div>
+
+  <button class="nav active" data-page="home">
+    <span class="nav-icon">⌂</span>Home
   </button>
+
+  <button class="nav" data-page="flip">
+    <span class="nav-icon">🪙</span>Coinflip
+  </button>
+
+  <button class="nav" data-page="leaderboard">
+    <span class="nav-icon">🏆</span>Leaderboard
+  </button>
+
+  <button class="nav" data-page="history">
+    <span class="nav-icon">◷</span>History
+  </button>
+
+  <div class="sidebar-bottom">
+    <div class="game-card">
+      <small>CONNECTED GAME</small>
+      <h3>⚡ Tap Simulator Reborn</h3>
+      <p>Community companion website. Not an official Roblox service.</p>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+  <div class="breadcrumb">CLICKFLIP / <strong id="crumb">HOME</strong></div>
+  <div class="top-right">
+    <div class="online"><span class="dot"></span>Demo mode</div>
+    <div class="profile">
+      <div class="avatar">P</div>
+      <div><b>Player</b><small>Guest account</small></div>
+    </div>
+  </div>
 </header>
 
-<div class="container">
+<!-- HOME -->
 
-  <h1>Welcome to ClickFlip</h1>
-  <p class="subtitle">
-    Your Clicker Simulator Reborn community.
-  </p>
+<section class="page active" id="home">
 
-  <div class="balance">
-    <p>YOUR DEMO CREDITS</p>
-    <h2>10,000</h2>
-    <p>Free practice points · No cash value</p>
+  <div class="heading">
+    <div>
+      <h1>Welcome to Clickflip 👋</h1>
+      <p>Your Tap Simulator Reborn community dashboard.</p>
+    </div>
+    <span class="tag">● DEMO VERSION</span>
   </div>
 
-  <h2 class="section-title">Explore Games</h2>
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-label">THE COMMUNITY HUB</div>
+      <h2>Ready to test your luck?</h2>
+      <p>Explore the coinflip simulator, check the leaderboard and keep track of your practice results.</p>
+      <button class="primary" onclick="showPage('flip')">Explore Coinflip →</button>
+    </div>
+    <div class="hero-coin">C</div>
+  </div>
 
-  <div class="games">
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-top"><small>DEMO POINTS</small><span class="stat-icon">💎</span></div>
+      <h2>10,000</h2>
+      <p>Practice balance</p>
+    </div>
+    <div class="stat">
+      <div class="stat-top"><small>TOTAL FLIPS</small><span class="stat-icon">🪙</span></div>
+      <h2 id="totalFlips">0</h2>
+      <p>Practice sessions</p>
+    </div>
+    <div class="stat">
+      <div class="stat-top"><small>HEADS</small><span class="stat-icon">🔵</span></div>
+      <h2 id="headsCount">0</h2>
+      <p>Results recorded</p>
+    </div>
+    <div class="stat">
+      <div class="stat-top"><small>TAILS</small><span class="stat-icon">🟣</span></div>
+      <h2 id="tailsCount">0</h2>
+      <p>Results recorded</p>
+    </div>
+  </div>
 
-    <div class="card">
-      <h3>🪙 Coinflip</h3>
-      <p>Try a free coin toss.</p>
-      <button onclick="flipCoin()">
-        Flip Coin
-      </button>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Explore Clickflip</h3>
+      <p class="panel-sub">Choose what you want to explore.</p>
+
+      <div class="mode" onclick="showPage('flip')" style="cursor:pointer">
+        <div class="mode-icon">🪙</div>
+        <div class="mode-info"><b>Coinflip Simulator</b><small>Try a coin flip and see the result.</small></div>
+        <span class="arrow">→</span>
+      </div>
+
+      <div class="mode" onclick="showPage('leaderboard')" style="cursor:pointer">
+        <div class="mode-icon">🏆</div>
+        <div class="mode-info"><b>Leaderboard</b><small>See the community demo rankings.</small></div>
+        <span class="arrow">→</span>
+      </div>
     </div>
 
-    <div class="card">
-      <h3>👥 Community</h3>
-      <p>Explore the player community.</p>
-      <button onclick="showCommunity()">
-        Explore
-      </button>
+    <div class="panel">
+      <h3>Recent activity</h3>
+      <p class="panel-sub">Your latest practice results.</p>
+      <div id="homeActivity">
+        <div class="empty">No flips yet. Try your first flip!</div>
+      </div>
     </div>
-
   </div>
 
-  <div class="result" id="result">
-    Welcome to ClickFlip!
+</section>
+
+<!-- COINFLIP -->
+
+<section class="page" id="flip">
+
+  <div class="heading">
+    <div>
+      <h1>Coinflip Simulator</h1>
+      <p>Flip a coin and see which side it lands on.</p>
+    </div>
+    <span class="tag">PRACTICE MODE</span>
   </div>
 
+  <div class="flip-area">
+    <div class="tag">TAP SIMULATOR REBORN COMMUNITY</div>
+    <div class="coin" id="coin">C</div>
+    <div class="flip-result" id="flipResult">Ready to flip?</div>
+    <p class="flip-note" id="flipNote">Press the button below to start a free practice flip.</p>
+    <button class="primary flip-button" id="flipButton" onclick="flipCoin()">FLIP COIN</button>
+
+    <div class="notice">
+      Practice only: no points are risked, transferred or awarded. Every flip is independent.
+    </div>
+  </div>
+
+  <div class="panel history-list">
+    <div class="section-title" style="margin-top:0">
+      <h3>Your recent flips</h3>
+      <span id="flipTotalLabel">0 results</span>
+    </div>
+    <div id="flipHistory"><div class="empty">Your results will appear here.</div></div>
+  </div>
+
+</section>
+
+<!-- LEADERBOARD -->
+
+<section class="page" id="leaderboard">
+
+  <div class="heading">
+    <div>
+      <h1>Leaderboard 🏆</h1>
+      <p>Example community rankings for the demo.</p>
+    </div>
+    <span class="tag">SAMPLE DATA</span>
+  </div>
+
+  <div class="panel">
+    <h3>Top community players</h3>
+    <p class="panel-sub">These are example profiles, not live Roblox player records.</p>
+
+    <table class="table">
+      <thead><tr><th>RANK</th><th>PLAYER</th><th>DEMO SCORE</th><th>STATUS</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">#1</td><td><div class="player"><div class="player-icon">👑</div>Shadow</div></td><td>98,500</td><td style="color:#43d9a3">Active</td></tr>
+        <tr><td class="rank">#2</td><td><div class="player"><div class="player-icon">⚡</div>Thunder</div></td><td>87,200</td><td style="color:#43d9a3">Active</td></tr>
+        <tr><td class="rank">#3</td><td><div class="player"><div class="player-icon">🔥</div>Blaze</div></td><td>76,800</td><td style="color:#43d9a3">Active</td></tr>
+        <tr><td class="rank">#4</td><td><div class="player"><div class="player-icon">🐉</div>Dragon</div></td><td>65,400</td><td style="color:#43d9a3">Active</td></tr>
+        <tr><td class="rank">#5</td><td><div class="player"><div class="player-icon">🌌</div>Nova</div></td><td>52,100</td><td style="color:#43d9a3">Active</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="notice">This leaderboard uses sample data. It is not connected to Roblox or actual player accounts.</div>
+
+</section>
+
+<!-- HISTORY -->
+
+<section class="page" id="history">
+
+  <div class="heading">
+    <div>
+      <h1>Flip History</h1>
+      <p>Review your previous practice flips.</p>
+    </div>
+    <span class="tag">YOUR ACTIVITY</span>
+  </div>
+
+  <div class="panel">
+    <div class="section-title" style="margin-top:0">
+      <h3>All results</h3>
+      <span id="historyCount">0 results</span>
+    </div>
+    <div id="allHistory"><div class="empty">No activity recorded yet.</div></div>
+  </div>
+
+</section>
+
+<div class="footer">
+  CLICKFLIP © 2026 · Fan-made Tap Simulator Reborn companion · Not affiliated with Roblox.
 </div>
 
-<footer>
-  ClickFlip © 2026 · Community Demo
-</footer>
+</main>
+</div>
 
 <script>
-function flipCoin() {
-  const result = Math.random() < 0.5
-    ? "HEADS 🪙"
-    : "TAILS 🪙";
+let historyData = [];
 
-  document.getElementById("result").innerText =
-    "You got " + result;
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+
+  document.querySelectorAll('.nav').forEach(n => {
+    n.classList.toggle('active', n.dataset.page === page);
+  });
+
+  document.getElementById('crumb').textContent = page.toUpperCase();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function showCommunity() {
-  document.getElementById("result").innerText =
-    "Welcome to the ClickFlip community!";
+document.querySelectorAll('.nav').forEach(button => {
+  button.addEventListener('click', () => showPage(button.dataset.page));
+});
+
+function flipCoin() {
+  const coin = document.getElementById('coin');
+  const button = document.getElementById('flipButton');
+  const result = document.getElementById('flipResult');
+  const note = document.getElementById('flipNote');
+
+  if (button.disabled) return;
+
+  button.disabled = true;
+  button.textContent = 'FLIPPING...';
+  result.textContent = 'The coin is flipping...';
+  note.textContent = 'Wait for the result.';
+  coin.classList.remove('flipping');
+  void coin.offsetWidth;
+  coin.classList.add('flipping');
+
+  const side = Math.random() < 0.5 ? 'HEADS' : 'TAILS';
+
+  setTimeout(() => {
+    coin.classList.remove('flipping');
+    coin.textContent = side === 'HEADS' ? 'H' : 'T';
+    result.textContent = side + '!';
+    note.textContent = 'Practice flip completed.';
+
+    historyData.unshift({
+      side:side,
+      time:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})
+    });
+
+    updateStats();
+    renderHistory();
+
+    button.disabled = false;
+    button.textContent = 'FLIP AGAIN';
+  },700);
+}
+
+function updateStats() {
+  document.getElementById('totalFlips').textContent = historyData.length;
+  document.getElementById('headsCount').textContent =
+    historyData.filter(x => x.side === 'HEADS').length;
+  document.getElementById('tailsCount').textContent =
+    historyData.filter(x => x.side === 'TAILS').length;
+}
+
+function renderHistory() {
+  const rows = historyData.slice(0,10).map((item,index) => `
+    <div class="activity-row">
+      <div>
+        <b>${item.side === 'HEADS' ? '🔵 Heads' : '🟣 Tails'}</b>
+        <small>Practice flip #${historyData.length-index}</small>
+      </div>
+      <span class="result">${item.time}</span>
+    </div>
+  `).join('');
+
+  const content = rows || '<div class="empty">No flips yet.</div>';
+
+  document.getElementById('homeActivity').innerHTML = content;
+  document.getElementById('flipHistory').innerHTML = content;
+  document.getElementById('allHistory').innerHTML = content;
+  document.getElementById('flipTotalLabel').textContent = historyData.length + ' results';
+  document.getElementById('historyCount').textContent = historyData.length + ' results';
 }
 </script>
 
